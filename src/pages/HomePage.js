@@ -33,18 +33,14 @@ const HomePage = () => {
   };
   const handleDelete = async () => {
     try {
-      await apiService.delete(`/cars/${selectedCar._id}`);
+      await apiService.delete(`/car/${selectedCar._id}`);
       getData();
     } catch (err) {
       console.log(err);
     }
   };
   const name =
-    selectedCar?.release_date +
-    " " +
-    selectedCar?.make +
-    " " +
-    selectedCar?.model;
+    selectedCar?.year + " " + selectedCar?.make + " " + selectedCar?.model;
   const columns = [
     { field: "name", headerName: "Name", flex: 3, minWidth: 120 },
     { field: "style", headerName: "Style", flex: 1, minWidth: 120 },
@@ -56,7 +52,7 @@ const HomePage = () => {
       minWidth: 120,
     },
     { field: "price", headerName: "Price", flex: 1, minWidth: 80 },
-    { field: "release_date", headerName: "Year", flex: 1, minWidth: 80 },
+    { field: "year", headerName: "Year", flex: 1, minWidth: 80 },
     {
       field: "id",
       headerName: "Edit/Delete",
@@ -82,17 +78,14 @@ const HomePage = () => {
     style: car.style,
     transmission_type: car.transmission_type,
     price: car.price,
-    release_date: car.release_date,
+    year: car.year,
   }));
 
-  const getData =
-    useCallback(
-      async () => {
-    const res = await apiService.get(`/cars?page=${page}`);
-    setCars(res.data.cars);
-    setTotalPages(res.data.total);
-      }
-      , [page]);
+  const getData = useCallback(async () => {
+    const res = await apiService.get(`/car?page=${page}`);
+    setCars(res.data);
+    setTotalPages(res.total);
+  }, [page]);
 
   useEffect(() => {
     getData();
